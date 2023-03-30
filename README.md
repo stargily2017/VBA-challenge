@@ -5,11 +5,11 @@ Sub StockMarket1()
 
 'Define a variable for year open
 
-Dim year_open As Double
+Dim open_price As Double
 
 'Define avariable for year close
 
-Dim year_close As Double
+Dim close_price As Double
 
 'Define a variable for yearly change
 
@@ -38,7 +38,7 @@ Dim ws As Worksheet
 
 For Each ws In Worksheets
 
-    'Assign a column header for every task we are going perform
+    'Assign a column header for each names
 
     ws.Range("I1").Value = "Ticker"
     ws.Range("J1").Value = "Yearly Change"
@@ -76,10 +76,10 @@ For Each ws In Worksheets
 
             Row_index = Row_index + 1
 
-            ' Get the value first day open form the column 3 or "C" and last day close of the year on column 6 or "F"
+            ' Get the first value  from "C" and last close value from"F"
 
-            year_open = ws.Cells(Row_index, 3).Value
-            year_close = ws.Cells(i, 6).Value
+            open_price = ws.Cells(Row_index, 3).Value
+            close_price = ws.Cells(i, 6).Value
 
             ' A for loop to sum the total stock volume using vol which is found in column 7 or "G"
 
@@ -91,14 +91,14 @@ For Each ws In Worksheets
 
             'When the loop get the value zero open the data
 
-            If year_open = 0 Then
+            If open_price = 0 Then
 
-                Percent_Change = year_close
+                Percent_Change = close_price
 
             Else
-                Yearly_Change = year_close - year_open
+                Yearly_Change = close_price - open_price
 
-                Percent_Change = Yearly_Change / year_open
+                Percent_Change = Yearly_Change / open_price
 
             End If
          
