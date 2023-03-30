@@ -38,7 +38,7 @@ Dim ws As Worksheet
 
 For Each ws In Worksheets
 
-    'Assign a column header for each names
+    'Assign each variable
 
     ws.Range("I1").Value = "Ticker"
     ws.Range("J1").Value = "Yearly Change"
@@ -51,7 +51,7 @@ For Each ws In Worksheets
     ws.Range("P1").Value = "Ticker"
     ws.Range("Q1").Value = "Value"
 
-    'Assign intiger for the loop to start
+    'Assign intiger for the loop
     First_Value = 2
     Row_index = 1
     Total_Stock_Volume = 0
@@ -211,10 +211,8 @@ For Each ws In Worksheets
       'find Decrease percent
 
             If Decrease < Actual_v And Decrease < previous_v Then
-
-                
-                Decrease = Decrease
-
+            
+            Decrease = Decrease
 
             ElseIf Actual_v < Increase And Actual_v < previous_v Then
 
