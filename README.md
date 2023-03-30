@@ -2,7 +2,6 @@
 
 Sub StockMarket1()
 
-
 'Declare a variable for open price
 
 Dim open_price As Double
