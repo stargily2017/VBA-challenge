@@ -3,36 +3,36 @@
 Sub StockMarket1()
 
 
-'Define a variable for year open
+'Declare a variable for open price
 
 Dim open_price As Double
 
-'Define avariable for year close
+'Declare a variable for close price
 
 Dim close_price As Double
 
-'Define a variable for yearly change
+'Declare a variable for yearly change
 
 Dim Yearly_Change As Double
 
-'Define a variable for total stock volume
+'Declare a variable for Total stock volume
 
 Dim Total_Stock_Volume As Double
 
-'Define a variable for percent change
+'Declare a variable for percent change
 
 Dim Percent_Change As Double
 
-'Define a variable to set up a row to start
+'Declare a variable to set up a row to start
 
 Dim First_Value As Integer
 
 
-'Define a variable for Ticker
+'Declare a variable for Ticker
 
 Dim Ticker As String
 
-'Define variable of the worksheet to excute the code in all work sheet at once in the workbook
+'Declare variable and excute the code in all work sheet
 
 Dim ws As Worksheet
 
