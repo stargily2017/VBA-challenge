@@ -1,0 +1,270 @@
+Sub StockMarket1()
+
+
+'Define a variable for open price, close price, yearly change, total stock volume, percent cahnge , first value and ticker
+
+Dim open_price As Double
+
+Dim close_price As Double
+
+Dim Yearly_Change As Double
+
+Dim Total_Stock_Volume As Double
+
+Dim Percent_Change As Double
+
+Dim First_Value As Integer
+
+Dim Ticker As String
+
+'Define variable of the worksheet to excute the code in all work sheet at once in the workbook
+
+Dim ws As Worksheet
+
+For Each ws In Worksheets
+
+    'Assign a column header for every task we are going perform
+
+    ws.Range("I1").Value = "Ticker"
+    ws.Range("J1").Value = "Yearly Change"
+    ws.Range("K1").Value = "Percent Change"
+    ws.Range("L1").Value = "Total Stock Volume"
+    
+    ws.Range("O2").Value = "Greatest % Increase"
+    ws.Range("O3").Value = "Greatest % Decrease"
+    ws.Range("O4").Value = "Greatest Total Volume"
+    ws.Range("P1").Value = "Ticker"
+    ws.Range("Q1").Value = "Value"
+
+    'Assign intiger for the loop to start
+
+    'first_Value means to take the second row of the ticker column
+    First_Value = 2
+
+    'Row_index means Each ticker in the first column , this one use for the loop  
+    Row_index = 1
+
+    'The starting loop wuth zero for the Total stock volume
+    
+    Total_Stock_Volume = 0
+
+    'Go to the last row of coumn A
+
+    LastRow = ws.Cells(Rows.Count, "A").End(xlUp).Row
+
+        ' looping the yearly change, percent change, and total stock volume
+
+        For i = 2 To LastRow
+
+            'if the ticker change or not equal and passing the next ticker that means I + 1
+
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+
+            'Get the Tickersymbol
+
+            Ticker = ws.Cells(i, 1).Value
+
+            ' if Ticker is not equal jumpimg to the next one
+            Row_index = Row_index + 1
+
+            ' Get the first value open price in column "c" and close price in column "F"
+
+            open_price = ws.Cells(Row_index, 3).Value
+            close_price = ws.Cells(i, 6).Value
+
+            ' To find the total stock volume in column "G"
+
+            For j = Row_index To i
+
+                Total_Stock_Volume = Total_Stock_Volume + ws.Cells(j, 7).Value
+
+            Next j
+
+            'When the loop get the value zero open the data
+
+            If open_price = 0 Then
+
+                Percent_Change = close_price
+
+            Else
+                Yearly_Change = close_price - open_price
+                Percent_Change = Yearly_Change / open_price
+            End If
+         
+
+            ' To Get the values in the worksheet
+
+            ws.Cells(First_Value, 9).Value = Ticker
+            ws.Cells(First_Value, 10).Value = Yearly_Change
+            ws.Cells(First_Value, 11).Value = Percent_Change
+            
+
+            'Use percentage format for the percent chanage and total stock volume
+
+            ws.Cells(First_Value, 11).NumberFormat = "0.00%"
+            ws.Cells(First_Value, 12).Value = Total_Stock_Volume
+
+            'The first row data finished then go to the next row that means AAB finished.
+
+            First_Value = First_Value + 1
+
+            'Get back Each variable to zero
+
+            Total_Stock_Volume = 0
+            Yearly_Change = 0
+            Percent_Change = 0
+
+            'Go to  i variable Row_index 
+            Row_index = i
+
+        End If
+
+    ' The first loop of ticker finished
+
+    Next i
+
+'Get the lastrow in "j" for making the color index for negative value and positive value from the reference (worksheet.cell property microsoftExcel)
+
+    LastRowj = ws.Cells(Rows.Count, "J").End(xlUp).Row
+
+
+        For n = 2 To LastRowj
+           
+            If ws.Cells(n, 10) > 0 Then
+
+                ws.Cells(n, 10).Interior.ColorIndex = 4
+
+            Else
+
+                ws.Cells(n, 10).Interior.ColorIndex = 3
+            End If
+
+        Next n
+
+
+     ' to find the graetest increase and graetest decrease and most value 
+
+    LastRowk = ws.Cells(Rows.Count, "K").End(xlUp).Row
+
+    'for finding the greatst ones , start from zero
+
+    Increase = 0
+    Decrease = 0
+    Greatest = 0
+
+        'To get the value from the loop 
+        For p = 3 To LastRowk
+
+            ' p - 1 means to give the incriment dtarting from above last row           
+            End_v = p - 1
+
+            ' Actual value in the column "K" value
+            
+            Actual_v = ws.Cells(p, 11).Value
+
+           'just above the last row percent(reoresent the first p -1
+           
+            above_last = ws.Cells(End_v, 11).Value
+
+            'greatest total volume row
+            volume = ws.Cells(p, 12).Value
+
+           
+            previous_volume = ws.Cells(End_v, 12).Value
+
+
+            'Get the greatest percent in column k amd what ticker, after getting the increase one , next compare increase vs decrease
+            'Always to find the top most incraese value , consider the other parameters Actual and above last.
+
+            
+            If Increase > Actual_v And Increase > above_last Then
+
+                Increase = Increase
+
+               
+            ElseIf Actual_v > Increase And Actual_v > above_last Then
+
+                Increase = Actual_v
+             'Cells(p. 9) is the ticker column
+               
+             Increase_Ticker = ws.Cells(p, 9).Value
+
+            ElseIf above_last > Increase And above_last > Actual_v Then
+
+                Increase = above_last
+
+                'define name for increase percentage
+                Increase_Ticker = ws.Cells(End_v, 9).Value
+
+            End If
+
+             'After finding the increase , to find Decrease percent in column "k" and find the ticker name too
+             'what ticker get greatest decrese
+
+            If Decrease < Actual_v And Decrease < above_last Then
+
+                'Decrease value is less than both means Decrease is the lowest one
+                Decrease = Decrease
+
+
+            ElseIf Actual_v < Increase And Actual_v < above_last Then
+
+                Decrease = Actual_v
+
+
+                Decrease_Ticker = ws.Cells(p, 9).Value
+
+            ElseIf above_last < Increase And above_last < Actual_v Then
+
+                Decrease = above_last
+
+                Decrease_Ticker = ws.Cells(End_v, 9).Value
+
+            End If
+
+      'Get the volume in the column "k" amd ticker name , compare the volume Greatest and previuos volume
+      
+            If Greatest > volume And Greatest > prevous_volume Then
+
+                Greatest = Greatest
+
+
+            ElseIf volume > Greatest And volume > prevous_volume Then
+
+                Greatest = volume
+
+                'greatest volume
+                
+                Greatest_Ticker = ws.Cells(p, 9).Value
+
+            ElseIf prevous_volume > Greatest And prevous_volume > volume Then
+
+                Greatest = prevous_volume
+
+                'define name for greatest volume
+                Greatest_Ticker = ws.Cells(End_v, 9).Value
+
+            End If
+
+        Next p
+ 
+        
+
+    'Finally Get the greatest increase, greatest decrease, and  greatest volume Ticker name
+    ws.Range("P2").Value = Increase_Ticker
+    ws.Range("P3").Value = Decrease_Ticker
+    ws.Range("P4").Value = Greatest_Ticker
+    ws.Range("Q2").Value = Increase
+    ws.Range("Q3").Value = Decrease
+    ws.Range("Q4").Value = Greatest
+
+    'Greatest increase and decrease in percentage format
+
+    ws.Range("Q2").NumberFormat = "0.00%"
+    ws.Range("Q3").NumberFormat = "0.00%"
+
+
+'Execute to the next worksheet for the same condition
+Next ws
+
+End Sub
